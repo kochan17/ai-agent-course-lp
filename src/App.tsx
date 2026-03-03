@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { CalendarBlank, Clock, MonitorPlay, Users, ArrowRight, BookOpen, Code, Lightbulb, Terminal, ShieldCheck, ArrowUpRight, CaretDown, CurrencyJpy, Plugs, Robot, TreeStructure } from '@phosphor-icons/react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 
 const IMG_LOGO = '/images/logo.webp';
 const IMG_AI_AGENT = '/images/ai-agent.webp';
@@ -1001,7 +1001,7 @@ function Home() {
 
 // ── Apply Page ──────────────────────────────────────────────────────────────
 
-const GAS_URL = 'YOUR_GAS_URL';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwb286cG-Vezmn0mngVFOY-yICI86snTtYfoWFBnFg4dqrLB_WPqPiCJ8efBZtYjVrL/exec';
 
 const FREE_DOMAINS = [
   'gmail.com','yahoo.co.jp','yahoo.com','hotmail.com','outlook.com',
@@ -1070,9 +1070,9 @@ function FieldError({ msg }: { msg?: string }) {
 }
 
 function Apply() {
+  const navigate = useNavigate();
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
 
@@ -1108,7 +1108,7 @@ function Apply() {
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setSubmitted(true);
+      navigate('/thanks');
     } catch {
       setServerError('送信に失敗しました。しばらく経ってから再度お試しいただくか、メールにてお問い合わせください。');
     } finally {
@@ -1131,24 +1131,7 @@ function Apply() {
             <p className="text-[#141413]/60 text-lg">以下のフォームにご記入いただき、送信してください。<br className="hidden sm:block" />担当者よりご連絡いたします。</p>
           </div>
 
-          {submitted ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-3xl p-12 text-center shadow-sm"
-            >
-              <div className="text-5xl mb-6">✅</div>
-              <h2 className="text-2xl font-black text-[#141413] mb-4">送信が完了しました</h2>
-              <p className="text-[#141413]/60 leading-relaxed mb-8">
-                お申し込みありがとうございます。<br />
-                担当者より3営業日以内にご連絡いたします。
-              </p>
-              <Link to="/" className="inline-flex items-center gap-2 bg-[#d97757] text-white font-bold py-4 px-8 rounded-full hover:opacity-90 transition-opacity">
-                トップページに戻る
-              </Link>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} noValidate className="bg-white rounded-3xl p-8 md:p-12 shadow-sm space-y-8">
+          <form onSubmit={handleSubmit} noValidate className="bg-white rounded-3xl p-8 md:p-12 shadow-sm space-y-8">
               {/* 会社名 */}
               <div>
                 <label className={labelClass}>会社名 <span className="text-[#d97757]">*</span></label>
@@ -1291,10 +1274,34 @@ function Apply() {
                 {submitting ? '送信中...' : <>送信する <ArrowRight className="w-5 h-5" /></>}
               </motion.button>
             </form>
-          )}
         </motion.div>
       </div>
     </div>
+  );
+}
+
+function Thanks() {
+  return (
+    <main className="min-h-screen bg-[#f5f3eb] flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-white rounded-3xl p-12 text-center shadow-sm max-w-lg w-full"
+      >
+        <div className="text-5xl mb-6">✅</div>
+        <h1 className="text-2xl font-black text-[#141413] mb-4">送信が完了しました</h1>
+        <p className="text-[#141413]/60 leading-relaxed mb-8">
+          お申し込みありがとうございます。<br />
+          担当者より3営業日以内にご連絡いたします。
+        </p>
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 bg-[#d97757] text-white font-bold py-4 px-8 rounded-full hover:opacity-90 transition-opacity"
+        >
+          トップページに戻る
+        </Link>
+      </motion.div>
+    </main>
   );
 }
 
@@ -1309,6 +1316,7 @@ export default function App() {
         <Route path="/company" element={<Company />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/thanks" element={<Thanks />} />
       </Routes>
       <Footer />
     </BrowserRouter>
