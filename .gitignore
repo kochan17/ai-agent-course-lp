@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+budget.html
+style.css
+scripts/
+.claude/

@@ -1,17 +1,28 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { CalendarBlank, Clock, MonitorPlay, Users, ArrowRight, BookOpen, Code, Lightbulb, Terminal, ShieldCheck, ArrowUpRight, CaretDown, CurrencyJpy } from '@phosphor-icons/react';
+import { CalendarBlank, Clock, MonitorPlay, Users, ArrowRight, BookOpen, Code, Lightbulb, Terminal, ShieldCheck, ArrowUpRight, CaretDown, CurrencyJpy, Plugs, Robot, TreeStructure } from '@phosphor-icons/react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 
-const CLAUDE_ICON = "https://storage.googleapis.com/aistudio-user-content/0-7050098001740456623-1740460244747.png";
-const CLAUDE_CODE_LOGO = "https://storage.googleapis.com/aistudio-user-content/1-7050098001740456623-1740460244747.png";
+const IMG_LOGO = '/images/logo.webp';
+const IMG_AI_AGENT = '/images/ai-agent.webp';
 
-// Unsplash Images
-const IMG_HERO = "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=2000&q=80";
-const IMG_TEAM = "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&q=80";
-const IMG_CODE = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80";
-const IMG_DAY1 = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=1600&q=80";
-const IMG_DAY2 = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1600&q=80";
+const IMG_TEAM = '/images/team.png';
+const IMG_CODE = '/images/code.png';
+const IMG_DAY1 = '/images/day1.png';
+const IMG_DAY2 = '/images/day2.png';
+const IMG_ONBOARD = '/images/onboard.webp';
+const IMG_ISSUE01 = '/images/issue01.png';
+const IMG_ISSUE02 = '/images/issue02.png';
+const IMG_ISSUE03 = '/images/issue03.png';
+
+// Tool logos
+const IMG_TOOL_CLAUDE      = '/images/logo/claude.webp';
+const IMG_TOOL_CODEX       = '/images/logo/codex.webp';
+const IMG_TOOL_GEMINI      = '/images/logo/gemini.webp';
+const IMG_TOOL_ANTIGRAVITY = '/images/logo/antigravity.webp';
+const IMG_TOOL_CURSOR      = '/images/logo/cursor.webp';
+const IMG_TOOL_VERCEL      = '/images/logo/vercel.webp';
+const IMG_TOOL_SUPABASE    = '/images/logo/supabase.webp';
 
 function Button({ children, className = "", ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
@@ -225,14 +236,15 @@ function Navbar() {
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#141413]/90 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
         <Link to="/" className="font-bold text-xl tracking-tight flex items-center gap-3 z-10">
-          <img src={CLAUDE_ICON} alt="Logo" className="w-6 h-6" />
-          <span className="hidden sm:inline text-white">2day Claude Codeコアスキル講座</span>
+          <img src={IMG_LOGO} alt="Logo" className="w-6 h-6" />
+          <span className="hidden sm:inline text-white">2day AIエージェントコアスキル講座</span>
         </Link>
         
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           <Link to="/#problem" className="text-sm font-bold text-white/70 hover:text-white transition-colors">課題</Link>
           <Link to="/#target" className="text-sm font-bold text-white/70 hover:text-white transition-colors">対象</Link>
+          <Link to="/#tools" className="text-sm font-bold text-white/70 hover:text-white transition-colors">ツール</Link>
           <Link to="/#program" className="text-sm font-bold text-white/70 hover:text-white transition-colors">プログラム</Link>
           <Link to="/#pricing" className="text-sm font-bold text-white/70 hover:text-white transition-colors">料金</Link>
           <Link to="/#faq" className="text-sm font-bold text-white/70 hover:text-white transition-colors">FAQ</Link>
@@ -252,8 +264,8 @@ function Footer() {
     <footer className="bg-[#141413] text-gray-500 py-16 px-6 text-center">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <Link to="/" className="flex items-center gap-3 mb-8 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
-          <img src={CLAUDE_ICON} alt="Logo" className="w-8 h-8" />
-          <span className="font-bold text-2xl tracking-tight text-white">2day Claude Codeコアスキル講座</span>
+          <img src={IMG_LOGO} alt="Logo" className="w-8 h-8" />
+          <span className="font-bold text-2xl tracking-tight text-white">2day AIエージェントコアスキル講座</span>
         </Link>
         <div className="flex flex-wrap justify-center gap-6 mb-8 text-sm">
           <Link to="/company" className="hover:text-white transition-colors">会社情報</Link>
@@ -383,7 +395,7 @@ function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="border-l-4 border-[#d97757] pl-6 md:pl-8"
+              className=""
             >
               <div className="flex flex-wrap items-center gap-3 mb-8">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-white font-semibold text-sm tracking-widest">
@@ -405,15 +417,14 @@ function Home() {
               </div>
               
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[1.1] mb-8 text-balance text-white">
-                <img src={CLAUDE_CODE_LOGO} alt="Claude Code" className="h-12 md:h-16 lg:h-20 mb-4 object-contain" />
-                コアスキル講座
+                AIエージェント<br />コアスキル講座
               </h1>
               
               <Link to="/#pricing">
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden flex items-center gap-3 mb-10 bg-gradient-to-r from-[#d97757] to-[#e85d3a] text-white w-fit py-4 px-10 rounded-full transition-all duration-300 group cursor-pointer shadow-[0_0_40px_rgba(217,119,87,0.4)] hover:shadow-[0_0_60px_rgba(217,119,87,0.6)]"
+                  className="relative overflow-hidden flex items-center gap-3 mb-10 bg-white text-[#d97757] w-fit py-5 px-12 rounded-full transition-all duration-300 group cursor-pointer shadow-[0_8px_40px_rgba(0,0,0,0.25)] hover:shadow-[0_12px_60px_rgba(0,0,0,0.35)] hover:bg-white/90"
                 >
                   <span className="relative z-10 font-bold text-lg flex items-center gap-2">
                     詳細を見る <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" weight="bold" />
@@ -423,7 +434,7 @@ function Home() {
               </Link>
 
               <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed font-medium">
-                単なる「生成AIの活用」から一歩先へ。Claude Codeを用いた実践的なワークショップを通じて、自律型AIエージェントを実務で活用するためのコアスキルを解説します。
+                単なる「生成AIの活用」から一歩先へ。AIエージェントを用いた実践的なワークショップを通じて、自律型AIエージェントを実務で活用するためのコアスキルを解説します。
               </p>
             </motion.div>
           </div>
@@ -465,13 +476,18 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm border border-[#141413]/5"
+              className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-[#141413]/5"
             >
-              <div className="text-[#d97757] font-mono font-bold tracking-widest mb-4">ISSUE 01</div>
-              <h3 className="text-xl font-bold mb-4 text-[#141413]">AIツールを導入したのに、使い方が「検索」と「文章の要約」だけ</h3>
-              <p className="text-[#141413]/70 leading-relaxed">
-                ChatGPTやCopilotのライセンスを全社に配布した。でも社員がやっていることは、Google検索の代わりに質問を投げるだけ。月額料金に見合う成果が出ているのか、正直わからない。
-              </p>
+              <div className="aspect-[16/9] overflow-hidden">
+                <img src={IMG_ISSUE01} alt="Issue 01" className="w-full h-full object-cover" />
+              </div>
+              <div className="p-8 md:p-10">
+                <div className="text-[#d97757] font-mono font-bold tracking-widest mb-4">ISSUE 01</div>
+                <h3 className="text-xl font-bold mb-4 text-[#141413]">AIツールを導入したのに、使い方が「検索」と「文章の要約」だけ</h3>
+                <p className="text-[#141413]/70 leading-relaxed">
+                  ChatGPTやCopilotのライセンスを全社に配布した。でも社員がやっていることは、Google検索の代わりに質問を投げるだけ。月額料金に見合う成果が出ているのか、正直わからない。
+                </p>
+              </div>
             </motion.div>
 
             {/* Issue 02 */}
@@ -480,13 +496,18 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm border border-[#141413]/5"
+              className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-[#141413]/5"
             >
-              <div className="text-[#d97757] font-mono font-bold tracking-widest mb-4">ISSUE 02</div>
-              <h3 className="text-xl font-bold mb-4 text-[#141413]">「AIで何ができるか」の判断を、現場任せにしてしまっている</h3>
-              <p className="text-[#141413]/70 leading-relaxed">
-                現場に「AIを使って効率化してほしい」と号令をかけたものの、具体的に何をどう変えるかは各部署任せ。結果、誰も本気で取り組まない。
-              </p>
+              <div className="aspect-[16/9] overflow-hidden">
+                <img src={IMG_ISSUE02} alt="Issue 02" className="w-full h-full object-cover" />
+              </div>
+              <div className="p-8 md:p-10">
+                <div className="text-[#d97757] font-mono font-bold tracking-widest mb-4">ISSUE 02</div>
+                <h3 className="text-xl font-bold mb-4 text-[#141413]">「AIで何ができるか」の判断を、現場任せにしてしまっている</h3>
+                <p className="text-[#141413]/70 leading-relaxed">
+                  現場に「AIを使って効率化してほしい」と号令をかけたものの、具体的に何をどう変えるかは各部署任せ。結果、誰も本気で取り組まない。
+                </p>
+              </div>
             </motion.div>
 
             {/* Issue 03 */}
@@ -495,13 +516,18 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: 0.3 }}
-              className="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm border border-[#141413]/5"
+              className="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-[#141413]/5"
             >
-              <div className="text-[#d97757] font-mono font-bold tracking-widest mb-4">ISSUE 03</div>
-              <h3 className="text-xl font-bold mb-4 text-[#141413]">外部のAIセミナーに参加しても、自社でどう使うかが見えない</h3>
-              <p className="text-[#141413]/70 leading-relaxed">
-                一般的な「AIトレンド講演」や「プロンプト入門」は聞いた。でも「うちの会社でどう使えばいいか」がいまだにわからない。
-              </p>
+              <div className="aspect-[16/9] overflow-hidden">
+                <img src={IMG_ISSUE03} alt="Issue 03" className="w-full h-full object-cover" />
+              </div>
+              <div className="p-8 md:p-10">
+                <div className="text-[#d97757] font-mono font-bold tracking-widest mb-4">ISSUE 03</div>
+                <h3 className="text-xl font-bold mb-4 text-[#141413]">外部のAIセミナーに参加しても、自社でどう使うかが見えない</h3>
+                <p className="text-[#141413]/70 leading-relaxed">
+                  一般的な「AIトレンド講演」や「プロンプト入門」は聞いた。でも「うちの会社でどう使えばいいか」がいまだにわからない。
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -549,7 +575,7 @@ function Home() {
                 className="w-full md:w-1/2"
               >
                 <div className="rounded-[2rem] overflow-hidden aspect-[4/3] shadow-2xl shadow-[#141413]/10">
-                  <img src={IMG_TEAM} alt="Team collaboration" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={IMG_TEAM} alt="Team collaboration" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                 </div>
               </motion.div>
               <motion.div 
@@ -565,7 +591,7 @@ function Home() {
                   導入の壁を突破し、<br />自律型エージェントを使いこなす
                 </h3>
                 <p className="text-xl text-[#141413]/70 leading-relaxed font-medium">
-                  「ChatGPTは使っているが、Claude Codeのような自律型エージェントの具体的な活用方法がわからない」という企業様へ。環境構築から実務でのプロンプト設計まで、つまずきやすいポイントを丁寧に解説します。
+                  「ChatGPTは使っているが、AIエージェントのような自律型エージェントの具体的な活用方法がわからない」という企業様へ。環境構築から実務でのプロンプト設計まで、つまずきやすいポイントを丁寧に解説します。
                 </p>
               </motion.div>
             </div>
@@ -579,7 +605,7 @@ function Home() {
                 className="w-full md:w-1/2"
               >
                 <div className="rounded-[2rem] overflow-hidden aspect-[4/3] shadow-2xl shadow-[#141413]/10">
-                  <img src={IMG_CODE} alt="Practical coding" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={IMG_CODE} alt="Practical coding" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                 </div>
               </motion.div>
               <motion.div 
@@ -609,7 +635,7 @@ function Home() {
                 className="w-full md:w-1/2"
               >
                 <div className="rounded-[2rem] overflow-hidden aspect-[4/3] shadow-2xl shadow-[#141413]/10">
-                  <img src={IMG_DAY2} alt="Onboarding" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                  <img src={IMG_ONBOARD} alt="Onboarding" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                 </div>
               </motion.div>
               <motion.div 
@@ -630,6 +656,147 @@ function Home() {
               </motion.div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Tools Section */}
+      <section id="tools" className="py-32 px-6 lg:px-12 bg-[#f9f8f6]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="mb-20 text-center"
+          >
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter mb-6 text-[#141413]">TOOLS</h2>
+            <p className="text-xl text-[#141413]/60 max-w-2xl mx-auto font-medium">
+              本講座でカバーするAIエージェント・開発ツールの全体像です。<br />
+              受講者はこちらのツールの中から使用するものを選んでいただきます。
+            </p>
+          </motion.div>
+
+          <div className="flex flex-col gap-16">
+            {[
+              {
+                label: 'AIコーディングエージェント',
+                tools: [
+                  { name: 'Claude Code', by: 'Anthropic',  logo: IMG_TOOL_CLAUDE,      desc: 'ターミナルから直接動作する自律型コーディングエージェント' },
+                  { name: 'Codex',       by: 'OpenAI',     logo: IMG_TOOL_CODEX,       desc: '自然言語の指示でコードを自動生成するOpenAI製エージェント' },
+                  { name: 'GeminiCLI',   by: 'Google',     logo: IMG_TOOL_GEMINI,      desc: 'CLI上でGeminiモデルを活用するGoogle製エージェント' },
+                  { name: 'Antigravity', by: '—',          logo: IMG_TOOL_ANTIGRAVITY, desc: '次世代AIコーディングエージェント' },
+                ],
+              },
+              {
+                label: 'AI統合開発環境',
+                tools: [
+                  { name: 'Cursor', by: 'Anysphere', logo: IMG_TOOL_CURSOR, desc: 'AI機能を内蔵したコードエディタ。自然言語でコードを編集・生成' },
+                ],
+              },
+              {
+                label: 'クラウドプラットフォーム',
+                tools: [
+                  { name: 'Vercel',   by: 'Vercel Inc.',   logo: IMG_TOOL_VERCEL,   desc: 'フロントエンドアプリをワンコマンドで公開できるデプロイ基盤' },
+                  { name: 'Supabase', by: 'Supabase Inc.', logo: IMG_TOOL_SUPABASE, desc: '認証・DB・ストレージをすぐに使えるオープンソースBaaS' },
+                ],
+              },
+            ].map((category, ci) => (
+              <motion.div
+                key={ci}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ delay: ci * 0.1 }}
+              >
+                {/* Category Header */}
+                <div className="flex items-center gap-4 mb-8">
+                  <span className="shrink-0 px-4 py-2 rounded-full bg-[#d97757] text-white text-sm font-bold">
+                    {category.label}
+                  </span>
+                  <div className="h-px flex-1 bg-[#141413]/10" />
+                </div>
+
+                {/* Tool Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {category.tools.map((tool, ti) => (
+                    <div
+                      key={ti}
+                      className="bg-white rounded-3xl p-6 border border-[#141413]/5 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4"
+                    >
+                      <img
+                        src={tool.logo}
+                        alt={tool.name}
+                        className="h-10 w-auto object-contain self-start"
+                      />
+                      <div>
+                        <div className="text-xl font-black text-[#141413] mb-1">{tool.name}</div>
+                        <div className="text-xs text-[#141413]/40 font-mono mb-2">{tool.by}</div>
+                        <p className="text-sm text-[#141413]/70 leading-relaxed">{tool.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* AIエージェント技術ブロック */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="mt-24 border-t border-[#141413]/10 pt-16"
+          >
+            <div className="mb-10 text-center">
+              <p className="text-xs font-mono tracking-widest uppercase text-[#d97757] mb-3">AGENT TECHNOLOGY</p>
+              <h3 className="text-2xl md:text-3xl font-black tracking-tight text-[#141413] mb-3">
+                ツールの枠を超えた、エージェント技術も学べます
+              </h3>
+              <p className="text-base text-[#141413]/60 max-w-2xl mx-auto">
+                MCP・Agent Skills・Sub Agent など、AIエージェントを実務で動かす上で不可欠な概念をハンズオンで解説します。
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: Plugs,
+                  name: 'MCP',
+                  subtitle: 'Model Context Protocol',
+                  desc: 'AIエージェントと外部ツールを繋ぐ標準プロトコル。APIやデータソースを自在に統合できます。',
+                },
+                {
+                  icon: Robot,
+                  name: 'Agent Skills',
+                  subtitle: 'Custom Commands',
+                  desc: 'Claude Code にカスタムコマンドを追加する拡張機能。繰り返し作業を自動化し生産性を高めます。',
+                },
+                {
+                  icon: TreeStructure,
+                  name: 'Sub Agent',
+                  subtitle: 'Multi-Agent Orchestration',
+                  desc: 'タスクを分割し複数エージェントが協調する実行モデル。大規模な開発を効率的に進められます。',
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-[#141413] rounded-2xl p-6 flex flex-col gap-4 border border-white/5"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[#d97757]/15 flex items-center justify-center">
+                    <item.icon size={20} weight="duotone" className="text-[#d97757]" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-black text-white mb-0.5">{item.name}</div>
+                    <div className="text-xs font-mono text-white/30 mb-3">{item.subtitle}</div>
+                    <p className="text-sm text-white/60 leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -668,10 +835,10 @@ function Home() {
                 <div className="text-[8rem] md:text-[12rem] font-black text-[#141413]/5 leading-none absolute -top-16 md:-top-24 -left-8 md:-left-12 pointer-events-none select-none">01</div>
                 <div className="relative z-10">
                   <div className="mb-8 rounded-[2rem] overflow-hidden h-64 md:h-80 w-full">
-                    <img src={IMG_DAY1} alt="Day 1" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <img src={IMG_DAY1} alt="Day 1" className="w-full h-full object-cover" />
                   </div>
                   <h3 className="text-3xl md:text-4xl font-bold mb-4">AIエージェント基礎と<br/>Claude Code体験</h3>
-                  <p className="text-xl text-[#141413]/60 mb-10">生成AIの現在地を理解し、実際にClaude Codeを動かしてアプリケーションを作成する体験ワークショップ。</p>
+                  <p className="text-xl text-[#141413]/60 mb-10">生成AIの現在地を理解し、実際にAIエージェントを動かしてアプリケーションを作成する体験ワークショップ。</p>
                   
                   <div className="space-y-6">
                     {[
@@ -703,7 +870,7 @@ function Home() {
                 <div className="text-[8rem] md:text-[12rem] font-black text-[#141413]/5 leading-none absolute -top-16 md:-top-24 -left-8 md:-left-12 pointer-events-none select-none">02</div>
                 <div className="relative z-10">
                   <div className="mb-8 rounded-[2rem] overflow-hidden h-64 md:h-80 w-full">
-                    <img src={IMG_DAY2} alt="Day 2" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <img src={IMG_DAY2} alt="Day 2" className="w-full h-full object-cover" />
                   </div>
                   <h3 className="text-3xl md:text-4xl font-bold mb-4">AIエージェント応用と<br/>自社導入への落とし込み</h3>
                   <p className="text-xl text-[#141413]/60 mb-10">より高度な機能の活用方法を学び、自社の業務にどう組み込むかを具体的に設計します。</p>
@@ -780,13 +947,15 @@ function Home() {
                 <div className="text-8xl font-black text-white mb-2 tracking-tighter">10<span className="text-4xl font-bold tracking-normal">万</span></div>
                 <div className="text-white/80 font-medium mb-12 text-lg">円（税抜）/ 参加人数制限なし</div>
                 
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-[#141413] text-white hover:bg-black font-bold py-6 px-10 rounded-full transition-colors duration-300 w-full text-xl flex items-center justify-center gap-3"
-                >
-                  ご相談・お申し込み <ArrowRight className="w-6 h-6" />
-                </motion.button>
+                <Link to="/apply" className="block w-full">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-[#141413] text-white hover:bg-black font-bold py-6 px-10 rounded-full transition-colors duration-300 w-full text-xl flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    ご相談・お申し込み <ArrowRight className="w-6 h-6" />
+                  </motion.div>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -830,6 +999,305 @@ function Home() {
   );
 }
 
+// ── Apply Page ──────────────────────────────────────────────────────────────
+
+const GAS_URL = 'YOUR_GAS_URL';
+
+const FREE_DOMAINS = [
+  'gmail.com','yahoo.co.jp','yahoo.com','hotmail.com','outlook.com',
+  'icloud.com','me.com','live.com','googlemail.com','docomo.ne.jp',
+  'ezweb.ne.jp','softbank.ne.jp','i.softbank.jp',
+];
+
+const TOOL_OPTIONS = [
+  { group: 'AIコーディングエージェント', items: ['Claude Code','GitHub Copilot','Cursor','Windsurf','Augment Code','Kiro'] },
+  { group: 'AIチャット', items: ['Claude','ChatGPT','Gemini','Grok','Microsoft Copilot'] },
+  { group: '開発ツール', items: ['VSCode','JetBrains IDEs','GitHub','GitLab'] },
+];
+
+const PARTICIPANT_OPTIONS = ['1〜5名','6〜10名','11〜15名','16〜20名','21名以上'];
+
+type FormState = {
+  companyName: string;
+  lastName: string; firstName: string;
+  lastNameKana: string; firstNameKana: string;
+  email: string;
+  phone: string;
+  participants: string;
+  tools: string[];
+  notes: string;
+  agreeTools: boolean;
+  agreeBilling: boolean;
+};
+
+type Errors = Partial<Record<keyof FormState, string>>;
+
+function validateForm(f: FormState): Errors {
+  const e: Errors = {};
+  if (!f.companyName.trim()) e.companyName = '会社名を入力してください';
+  if (!f.lastName.trim())    e.lastName    = '姓を入力してください';
+  if (!f.firstName.trim())   e.firstName   = '名を入力してください';
+  if (!f.lastNameKana.trim())  e.lastNameKana  = 'フリガナ（姓）を入力してください';
+  else if (!/^[ァ-ヶー\s　]+$/.test(f.lastNameKana))  e.lastNameKana  = '全角カタカナで入力してください';
+  if (!f.firstNameKana.trim()) e.firstNameKana = 'フリガナ（名）を入力してください';
+  else if (!/^[ァ-ヶー\s　]+$/.test(f.firstNameKana)) e.firstNameKana = '全角カタカナで入力してください';
+  if (!f.email.trim()) {
+    e.email = 'メールアドレスを入力してください';
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) {
+    e.email = 'メールアドレスの形式が正しくありません';
+  } else {
+    const domain = f.email.split('@')[1]?.toLowerCase();
+    if (FREE_DOMAINS.includes(domain)) e.email = '法人メールアドレスを入力してください（フリーアドレス不可）';
+  }
+  if (!f.phone.trim()) e.phone = '電話番号を入力してください';
+  else if (!/^[\d\-\(\)\+\s]+$/.test(f.phone)) e.phone = '電話番号は数字・ハイフンで入力してください';
+  if (!f.participants) e.participants = '参加予定人数を選択してください';
+  if (f.tools.length === 0) e.tools = '希望ツールを1つ以上選択してください';
+  if (!f.agreeTools)   e.agreeTools   = '同意が必要です';
+  if (!f.agreeBilling) e.agreeBilling = '同意が必要です';
+  return e;
+}
+
+const INITIAL_FORM: FormState = {
+  companyName:'', lastName:'', firstName:'', lastNameKana:'', firstNameKana:'',
+  email:'', phone:'', participants:'', tools:[], notes:'',
+  agreeTools: false, agreeBilling: false,
+};
+
+function FieldError({ msg }: { msg?: string }) {
+  if (!msg) return null;
+  return <p className="text-red-500 text-sm mt-1">{msg}</p>;
+}
+
+function Apply() {
+  const [form, setForm] = useState<FormState>(INITIAL_FORM);
+  const [errors, setErrors] = useState<Errors>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState('');
+
+  const set = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm(prev => ({ ...prev, [field]: e.target.value }));
+    setErrors(prev => ({ ...prev, [field]: undefined }));
+  };
+
+  const toggleTool = (tool: string) => {
+    setForm(prev => {
+      const tools = prev.tools.includes(tool) ? prev.tools.filter(t => t !== tool) : [...prev.tools, tool];
+      return { ...prev, tools };
+    });
+    setErrors(prev => ({ ...prev, tools: undefined }));
+  };
+
+  const isValid = Object.keys(validateForm(form)).length === 0;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const errs = validateForm(form);
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setSubmitting(true);
+    setServerError('');
+    try {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          tools: form.tools.join(', '),
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setSubmitted(true);
+    } catch {
+      setServerError('送信に失敗しました。しばらく経ってから再度お試しいただくか、メールにてお問い合わせください。');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const inputClass = "w-full bg-white border border-[#141413]/20 rounded-xl px-4 py-3 text-[#141413] placeholder-[#141413]/30 focus:outline-none focus:border-[#d97757] focus:ring-2 focus:ring-[#d97757]/20 transition-all duration-200";
+  const labelClass = "block text-sm font-bold text-[#141413] mb-1.5";
+
+  return (
+    <div className="min-h-screen bg-[#f5f3eb] py-24 px-6">
+      <div className="max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className="text-center mb-12">
+            <Link to="/" className="inline-flex items-center gap-2 text-[#d97757] font-bold mb-8 hover:opacity-70 transition-opacity">
+              ← トップページに戻る
+            </Link>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-[#141413] mb-4">ご相談・お申し込み</h1>
+            <p className="text-[#141413]/60 text-lg">以下のフォームにご記入いただき、送信してください。<br className="hidden sm:block" />担当者よりご連絡いたします。</p>
+          </div>
+
+          {submitted ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white rounded-3xl p-12 text-center shadow-sm"
+            >
+              <div className="text-5xl mb-6">✅</div>
+              <h2 className="text-2xl font-black text-[#141413] mb-4">送信が完了しました</h2>
+              <p className="text-[#141413]/60 leading-relaxed mb-8">
+                お申し込みありがとうございます。<br />
+                担当者より3営業日以内にご連絡いたします。
+              </p>
+              <Link to="/" className="inline-flex items-center gap-2 bg-[#d97757] text-white font-bold py-4 px-8 rounded-full hover:opacity-90 transition-opacity">
+                トップページに戻る
+              </Link>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} noValidate className="bg-white rounded-3xl p-8 md:p-12 shadow-sm space-y-8">
+              {/* 会社名 */}
+              <div>
+                <label className={labelClass}>会社名 <span className="text-[#d97757]">*</span></label>
+                <input type="text" value={form.companyName} onChange={set('companyName')} placeholder="株式会社サンプル" className={inputClass} />
+                <FieldError msg={errors.companyName} />
+              </div>
+
+              {/* 氏名 */}
+              <div>
+                <label className={labelClass}>氏名 <span className="text-[#d97757]">*</span></label>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input type="text" value={form.lastName} onChange={set('lastName')} placeholder="山田" className={inputClass} />
+                    <FieldError msg={errors.lastName} />
+                  </div>
+                  <div>
+                    <input type="text" value={form.firstName} onChange={set('firstName')} placeholder="太郎" className={inputClass} />
+                    <FieldError msg={errors.firstName} />
+                  </div>
+                </div>
+              </div>
+
+              {/* フリガナ */}
+              <div>
+                <label className={labelClass}>フリガナ <span className="text-[#d97757]">*</span></label>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input type="text" value={form.lastNameKana} onChange={set('lastNameKana')} placeholder="ヤマダ" className={inputClass} />
+                    <FieldError msg={errors.lastNameKana} />
+                  </div>
+                  <div>
+                    <input type="text" value={form.firstNameKana} onChange={set('firstNameKana')} placeholder="タロウ" className={inputClass} />
+                    <FieldError msg={errors.firstNameKana} />
+                  </div>
+                </div>
+              </div>
+
+              {/* メール */}
+              <div>
+                <label className={labelClass}>メールアドレス（法人）<span className="text-[#d97757]">*</span></label>
+                <input type="email" value={form.email} onChange={set('email')} placeholder="taro@example.co.jp" className={inputClass} />
+                <FieldError msg={errors.email} />
+              </div>
+
+              {/* 電話番号 */}
+              <div>
+                <label className={labelClass}>電話番号 <span className="text-[#d97757]">*</span></label>
+                <input type="tel" value={form.phone} onChange={set('phone')} placeholder="03-1234-5678" className={inputClass} />
+                <FieldError msg={errors.phone} />
+              </div>
+
+              {/* 参加予定人数 */}
+              <div>
+                <label className={labelClass}>参加予定人数 <span className="text-[#d97757]">*</span></label>
+                <select value={form.participants} onChange={set('participants')} className={inputClass}>
+                  <option value="">選択してください</option>
+                  {PARTICIPANT_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+                <FieldError msg={errors.participants} />
+              </div>
+
+              {/* 希望ツール */}
+              <div>
+                <label className={labelClass}>希望ツール <span className="text-[#d97757]">*</span><span className="text-[#141413]/40 font-normal ml-2">（複数選択可）</span></label>
+                <div className="space-y-4">
+                  {TOOL_OPTIONS.map(group => (
+                    <div key={group.group}>
+                      <p className="text-xs font-bold text-[#141413]/40 tracking-widest uppercase mb-2">{group.group}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {group.items.map(tool => {
+                          const checked = form.tools.includes(tool);
+                          return (
+                            <button
+                              key={tool}
+                              type="button"
+                              onClick={() => toggleTool(tool)}
+                              className={`px-4 py-2 rounded-full text-sm font-bold border-2 transition-all duration-200 ${
+                                checked
+                                  ? 'bg-[#d97757] border-[#d97757] text-white'
+                                  : 'bg-white border-[#141413]/20 text-[#141413]/60 hover:border-[#d97757] hover:text-[#d97757]'
+                              }`}
+                            >
+                              {tool}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <FieldError msg={errors.tools} />
+              </div>
+
+              {/* 備考 */}
+              <div>
+                <label className={labelClass}>ご質問・備考 <span className="text-[#141413]/40 font-normal">（任意）</span></label>
+                <textarea value={form.notes} onChange={set('notes')} rows={4} placeholder="ご要望やご質問があればご記入ください" className={inputClass + ' resize-none'} />
+              </div>
+
+              {/* 同意事項 */}
+              <div className="space-y-4 pt-2">
+                <p className="text-sm font-bold text-[#141413]">同意事項 <span className="text-[#d97757]">*</span></p>
+                {[
+                  { key: 'agreeTools' as const, label: '選択したツールがファイアウォール等のセキュリティソフトにより使用できない場合があることを理解しました' },
+                  { key: 'agreeBilling' as const, label: 'ツールの課金・契約はご自身の管理となることを理解しました' },
+                ].map(({ key, label }) => (
+                  <label key={key} className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={form[key]}
+                      onChange={e => {
+                        setForm(prev => ({ ...prev, [key]: e.target.checked }));
+                        setErrors(prev => ({ ...prev, [key]: undefined }));
+                      }}
+                      className="mt-0.5 w-5 h-5 rounded border-[#141413]/20 accent-[#d97757] cursor-pointer flex-shrink-0"
+                    />
+                    <span className="text-sm text-[#141413]/70 leading-relaxed group-hover:text-[#141413] transition-colors">{label}</span>
+                  </label>
+                ))}
+                {(errors.agreeTools || errors.agreeBilling) && (
+                  <p className="text-red-500 text-sm">すべての同意事項にチェックしてください</p>
+                )}
+              </div>
+
+              {serverError && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-600 text-sm">{serverError}</div>
+              )}
+
+              <motion.button
+                type="submit"
+                disabled={!isValid || submitting}
+                whileHover={isValid && !submitting ? { scale: 1.02 } : {}}
+                whileTap={isValid && !submitting ? { scale: 0.98 } : {}}
+                className={`w-full py-5 rounded-full font-black text-lg flex items-center justify-center gap-3 transition-all duration-300 ${
+                  isValid && !submitting
+                    ? 'bg-[#d97757] text-white hover:shadow-[0_0_30px_rgba(217,119,87,0.4)] cursor-pointer'
+                    : 'bg-[#141413]/10 text-[#141413]/30 cursor-not-allowed'
+                }`}
+              >
+                {submitting ? '送信中...' : <>送信する <ArrowRight className="w-5 h-5" /></>}
+              </motion.button>
+            </form>
+          )}
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -837,6 +1305,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/apply" element={<Apply />} />
         <Route path="/company" element={<Company />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
